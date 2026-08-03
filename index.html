@@ -50,6 +50,13 @@
     padding-bottom:28px;
     border-bottom:1px solid var(--line);
   }
+  .top-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+  }
   .eyebrow{
     font-family:'JetBrains Mono', monospace;
     font-size:12.5px;
@@ -69,13 +76,36 @@
     transform:rotate(45deg);
     flex-shrink:0;
   }
+  .lang-switch{
+    display:flex;
+    gap:4px;
+    border:1px solid var(--ink);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .lang-switch button{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:0.05em;
+    background:var(--white);
+    color:var(--ink);
+    border:none;
+    padding:7px 12px;
+    cursor:pointer;
+    transition:background .15s ease, color .15s ease;
+  }
+  .lang-switch button + button{ border-left:1px solid var(--ink); }
+  .lang-switch button.active{ background:var(--ink); color:var(--white); }
+  .lang-switch button:hover:not(.active){ background:var(--teal-dim); }
+
   h1{
     font-family:'Fraunces', serif;
     font-weight:600;
     font-size:clamp(30px,4.6vw,48px);
     line-height:1.08;
     margin:0;
-    max-width:20ch;
+    max-width:22ch;
   }
   .lede{
     font-size:16px;
@@ -145,6 +175,19 @@
       0 0 4px var(--white), 0 0 4px var(--white), 0 0 8px var(--white);
   }
   .grid-label::before{ display:none; }
+
+  .town-label{
+    background:rgba(251,249,244,0.9) !important;
+    border:1px solid var(--line) !important;
+    box-shadow:none !important;
+    font-family:'Inter', sans-serif;
+    font-weight:600;
+    font-size:11px;
+    color:var(--ink);
+    padding:1px 5px !important;
+    border-radius:3px !important;
+  }
+  .town-label::before{ display:none; }
 
   .readout{
     padding:16px 20px;
@@ -317,6 +360,28 @@
   .coord-field input:focus-visible{ outline:2px solid var(--teal); outline-offset:1px; }
   .coord-entry .status-msg{ margin-top:8px; }
 
+  .search-entry{
+    padding:16px 20px;
+    border-top:1px solid var(--line);
+    background:var(--white);
+  }
+  .search-entry-row{
+    display:flex;
+    gap:10px;
+  }
+  #placeSearch{
+    flex:1;
+    font-family:'JetBrains Mono', monospace;
+    font-size:14px;
+    padding:9px 10px;
+    border:1px solid var(--ink);
+    border-radius:3px;
+    background:var(--paper);
+    color:var(--ink);
+  }
+  #placeSearch:focus-visible{ outline:2px solid var(--teal); outline-offset:1px; }
+  .search-entry .status-msg{ margin-top:8px; }
+
   footer{
     margin-top:48px;
     padding-top:20px;
@@ -332,68 +397,106 @@
 <div class="wrap">
 
   <header class="hero">
-    <div class="eyebrow"> kigali.RAI.Grid-based Geocode</div>
-    <h1>Click into the grid, one fold at a time.</h1>
-    <p class="lede">The 4×4 <strong>RAI</strong>Rwanda Adress Identifier grid is drawn right on the map. Click a cell and the map zooms in to fill it with the same grid again — Eight folds narrow any point down to an 8-character code. Or type a code into the panel to watch it unfold in reverse.</p>
+    <div class="top-row">
+      <div class="eyebrow" data-i18n="eyebrow">Kigali.RAI.Grid-based Geocode</div>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="en" class="active">EN</button>
+        <button type="button" data-lang="rw">RW</button>
+        <button type="button" data-lang="fr">FR</button>
+      </div>
+    </div>
+    <h1 data-i18n="title">Click into the grid, one fold at a time.</h1>
+    <p class="lede" data-i18n="lede"><strong>RAI</strong> — the Rwanda Address Identifier — draws a 4×4 grid right on the map. Click a cell and the map zooms in to fill it with the same grid again — eight folds narrow any point down to an 8-character code. Or type a code into the panel to watch it unfold in reverse.</p>
   </header>
 
   <div class="grid-layout">
 
     <section class="card" aria-labelledby="mapHeading">
       <div class="card-head">
-        <h2 id="mapHeading">RWANDA ADRESSES</h2>
-        <span class="hint" id="mapHint">click a lettered cell</span>
+        <h2 id="mapHeading" data-i18n="mapHeading">RWANDA ADDRESSES</h2>
+        <span class="hint" id="mapHint" data-i18n="mapHintClick">click a lettered cell</span>
       </div>
       <div id="map"></div>
+
+      <div class="search-entry">
+        <label class="field-label" for="placeSearch" data-i18n="searchLabel">Search a place</label>
+        <div class="search-entry-row" style="margin-top:8px;">
+          <input id="placeSearch" type="text" data-i18n-placeholder="searchPlaceholder" placeholder="e.g. Nyamirambo, or &quot;hotel&quot;" autocomplete="off" spellcheck="false">
+          <button class="locate-btn" id="searchBtn" type="button" data-i18n="searchBtn">Search</button>
+        </div>
+        <p class="status-msg" id="searchStatus" role="status" aria-live="polite"></p>
+      </div>
+
       <div class="coord-entry">
         <div class="coord-entry-fields">
           <div class="coord-field">
-            <label class="field-label" for="latInput">Latitude</label>
+            <label class="field-label" for="latInput" data-i18n="latLabel">Latitude</label>
             <input id="latInput" type="text" placeholder="-1.9441" autocomplete="off" spellcheck="false">
           </div>
           <div class="coord-field">
-            <label class="field-label" for="lonInput">Longitude</label>
+            <label class="field-label" for="lonInput" data-i18n="lonLabel">Longitude</label>
             <input id="lonInput" type="text" placeholder="30.0619" autocomplete="off" spellcheck="false">
           </div>
-          <button class="locate-btn" id="encodeBtn" type="button">Get RAI</button>
+          <button class="locate-btn" id="encodeBtn" type="button" data-i18n="getRaiBtn">Get RAI</button>
         </div>
         <p class="status-msg" id="encodeStatus" role="status" aria-live="polite"></p>
       </div>
-      <div class="how-it-works">
+      <div class="how-it-works" data-i18n="howItWorks">
         Each click narrows the map to one cell of the grid <span style="font-family:'JetBrains Mono',monospace;">F C 9 8 / J 3 2 7 / K 4 5 6 / L M P T</span> and redraws it there — <b>eight clicks make a full RAI.</b>
       </div>
       <div class="readout">
         <div class="progress-block">
-          LEVEL <span id="levelOut">0</span>/8
+          <span data-i18n="levelLabel">LEVEL</span> <span id="levelOut">0</span>/8
           <span class="progress-dots" id="progressDots"></span>
         </div>
         <div class="btn-row">
-          <button class="btn" id="backBtn" type="button" disabled>&larr; Back</button>
-          <button class="btn" id="resetBtn" type="button" disabled>Reset</button>
+          <button class="btn" id="backBtn" type="button" disabled><span data-i18n="backBtn">&larr; Back</span></button>
+          <button class="btn" id="resetBtn" type="button" disabled data-i18n="resetBtn">Reset</button>
         </div>
         <div class="code-block">
           <span class="code-value empty" id="encodeOut">— — — — — — — —</span>
-          <button class="btn" id="copyBtn" type="button">Copy</button>
+          <button class="btn" id="copyBtn" type="button" data-i18n="copyBtn">Copy</button>
         </div>
+      </div>
+
+      <div class="search-entry" id="registerPanel" style="display:none;">
+        <label class="field-label" data-i18n="registerHeading">Register this household</label>
+        <div style="display:flex; flex-direction:column; gap:8px; margin-top:10px;">
+          <input id="regOwnerName" type="text" data-i18n-placeholder="regOwnerPlaceholder" placeholder="Owner name" autocomplete="off" style="font-family:'Inter',sans-serif; font-size:14px; padding:9px 10px; border:1px solid var(--ink); border-radius:3px; background:var(--paper); color:var(--ink);">
+          <input id="regPhone" type="text" data-i18n-placeholder="regPhonePlaceholder" placeholder="Phone number" autocomplete="off" style="font-family:'Inter',sans-serif; font-size:14px; padding:9px 10px; border:1px solid var(--ink); border-radius:3px; background:var(--paper); color:var(--ink);">
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <input id="regVillage" type="text" data-i18n-placeholder="regVillagePlaceholder" placeholder="Village" autocomplete="off" style="flex:1; min-width:100px; font-family:'Inter',sans-serif; font-size:14px; padding:9px 10px; border:1px solid var(--ink); border-radius:3px; background:var(--paper); color:var(--ink);">
+            <input id="regCell" type="text" data-i18n-placeholder="regCellPlaceholder" placeholder="Cell" autocomplete="off" style="flex:1; min-width:100px; font-family:'Inter',sans-serif; font-size:14px; padding:9px 10px; border:1px solid var(--ink); border-radius:3px; background:var(--paper); color:var(--ink);">
+            <input id="regSector" type="text" data-i18n-placeholder="regSectorPlaceholder" placeholder="Sector" autocomplete="off" style="flex:1; min-width:100px; font-family:'Inter',sans-serif; font-size:14px; padding:9px 10px; border:1px solid var(--ink); border-radius:3px; background:var(--paper); color:var(--ink);">
+            <input id="regDistrict" type="text" data-i18n-placeholder="regDistrictPlaceholder" placeholder="District" autocomplete="off" style="flex:1; min-width:100px; font-family:'Inter',sans-serif; font-size:14px; padding:9px 10px; border:1px solid var(--ink); border-radius:3px; background:var(--paper); color:var(--ink);">
+          </div>
+          <button class="locate-btn" id="registerBtn" type="button" data-i18n="registerBtn" style="align-self:flex-start;">Save address</button>
+        </div>
+        <p class="status-msg" id="registerStatus" role="status" aria-live="polite"></p>
+      </div>
+
+      <div class="search-entry">
+        <button class="btn" id="viewHouseholdsBtn" type="button" data-i18n="viewHouseholdsBtn">View saved addresses</button>
+        <div id="householdsList" style="margin-top:12px; display:none;"></div>
       </div>
     </section>
 
     <section class="card" aria-labelledby="decodeHeading">
       <div class="card-head">
-        <h2 id="decodeHeading">Unfold a code</h2>
-        <span class="hint">8 chars</span>
+        <h2 id="decodeHeading" data-i18n="decodeHeading">Unfold a code</h2>
+        <span class="hint" data-i18n="eightChars">8 chars</span>
       </div>
       <div class="decode-body">
         <div>
-          <label class="field-label" for="pinInput">RAI</label>
+          <label class="field-label" for="pinInput" data-i18n="raiLabel">RAI</label>
           <div class="pin-input-row" style="margin-top:8px;">
             <input id="pinInput" type="text" placeholder="F3-C9-2J7K" maxlength="10" autocomplete="off" spellcheck="false">
-            <button class="locate-btn" id="locateBtn" type="button">Locate</button>
+            <button class="locate-btn" id="locateBtn" type="button" data-i18n="locateBtn">Locate</button>
           </div>
         </div>
         <p class="status-msg" id="decodeStatus" role="status" aria-live="polite"></p>
         <hr class="divider-line">
-        <p class="region-note">
+        <p class="region-note" data-i18n="regionNote">
           This instance covers <b>Rwanda</b>, with the bounding region —
           latitude <b>&minus;2.973955° to &minus;0.919208°</b>, longitude <b>28.861188° to 30.905016°</b> —
           which comfortably includes all of <b>Kigali</b>. Locating a code plays
@@ -404,8 +507,8 @@
 
   </div>
 
-  <footer>
-   national coverage. Map tiles &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors.
+  <footer data-i18n="footer">
+   National addressing system — testing platform. Map tiles &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors.
   </footer>
 
 </div>
@@ -415,7 +518,212 @@
 (function(){
   "use strict";
 
-  /* ---------- RAIcore ---------- */
+  /* ---------- Translations ---------- */
+
+  const I18N = {
+    en: {
+      eyebrow: "Kigali.RAI.Grid-based Geocode",
+      title: "Click into the grid, one fold at a time.",
+      lede: "<strong>RAI</strong> — the Rwanda Address Identifier — draws a 4×4 grid right on the map. Click a cell and the map zooms in to fill it with the same grid again — eight folds narrow any point down to an 8-character code. Or type a code into the panel to watch it unfold in reverse.",
+      mapHeading: "RWANDA ADDRESSES",
+      mapHintClick: "click a lettered cell",
+      mapHintDone: "code complete",
+      searchLabel: "Search a place",
+      searchPlaceholder: "e.g. Nyamirambo, or \"hotel\"",
+      searchBtn: "Search",
+      latLabel: "Latitude",
+      lonLabel: "Longitude",
+      getRaiBtn: "Get RAI",
+      howItWorks: "Each click narrows the map to one cell of the grid <span style=\"font-family:'JetBrains Mono',monospace;\">F C 9 8 / J 3 2 7 / K 4 5 6 / L M P T</span> and redraws it there — <b>eight clicks make a full RAI.</b>",
+      levelLabel: "LEVEL",
+      backBtn: "&larr; Back",
+      resetBtn: "Reset",
+      copyBtn: "Copy",
+      copiedBtn: "Copied",
+      decodeHeading: "Unfold a code",
+      eightChars: "8 chars",
+      raiLabel: "RAI",
+      locateBtn: "Locate",
+      regionNote: "This instance covers <b>Rwanda</b>, with the bounding region — latitude <b>&minus;2.973955° to &minus;0.919208°</b>, longitude <b>28.861188° to 30.905016°</b> — which comfortably includes all of <b>Kigali</b>. Locating a code plays the same eight folds back on the map, in reverse.",
+      footer: "National addressing system — testing platform. Map tiles &copy; <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\" rel=\"noopener\">OpenStreetMap</a> contributors.",
+      searchEmpty: "Type a place name first.",
+      searchSearching: "Searching…",
+      searchNoResult: "No place found in Rwanda matching that name.",
+      searchOutOfBounds: "That place falls outside the Rwanda bounding region.",
+      searchFolding: "Found — folding the grid onto ",
+      searchLocated: "Located ",
+      searchFailed: "Search failed — check your internet connection and try again.",
+      encodeEnterBoth: "Enter both a latitude and a longitude.",
+      encodeOutOfBounds: "That point falls outside the Rwanda bounding region.",
+      encodeFolding: "Folding the grid onto that point…",
+      encodeDone: "Done — RAI shown above, point marked on the map.",
+      decodeEnterCode: "Enter an 8-character code first.",
+      decodeUnfolding: "Unfolding on the map…",
+      decodeLocated: "Located — that's the center of the final cell.",
+      decodeBadLength: "That code needs exactly 8 characters.",
+      decodeBadChar: "Unrecognized character — check against the grid letters.",
+      registerHeading: "Register this household",
+      regOwnerPlaceholder: "Owner name",
+      regPhonePlaceholder: "Phone number",
+      regVillagePlaceholder: "Village",
+      regCellPlaceholder: "Cell",
+      regSectorPlaceholder: "Sector",
+      regDistrictPlaceholder: "District",
+      registerBtn: "Save address",
+      registerSaving: "Saving…",
+      registerDone: "Saved — this household is now registered at this RAI code.",
+      registerDuplicate: "A household is already registered at this exact location.",
+      registerFailed: "Could not save — check that the backend server is running.",
+      viewHouseholdsBtn: "View saved addresses",
+      hideHouseholdsBtn: "Hide saved addresses",
+      noHouseholdsYet: "No addresses saved yet."
+    },
+    rw: {
+      eyebrow: "Kigali.RAI.Igishushanyo cy'Imibare",
+      title: "Kanda ku gishushanyo, intambwe imwe icyarimwe.",
+      lede: "<strong>RAI</strong> — Rwanda Address Identifier — igishushanyo cya 4×4 gishushanywa ku ikarita. Kanda ku gasanduku maze ikarita izisunikaho kugira ngo yuzuzwe n'ikindi gishushanyo nk'icyo — intambwe umunani zigabanya ahantu hose kugera ku modoka y'inyuguti umunani. Cyangwa wandike umubare mu gasanduku kugira ngo urebe uko usubira inyuma.",
+      mapHeading: "AHANTU MU RWANDA",
+      mapHintClick: "kanda ku gasanduku k'inyuguti",
+      mapHintDone: "umubare urarangiye",
+      searchLabel: "Shakisha ahantu",
+      searchPlaceholder: "urugero: Nyamirambo, Kigali",
+      searchBtn: "Shakisha",
+      latLabel: "Ubunini (Latitude)",
+      lonLabel: "Uburebure (Longitude)",
+      getRaiBtn: "Bona RAI",
+      howItWorks: "Buri gukanda bigabanya ikarita ku gasanduku kamwe k'igishushanyo <span style=\"font-family:'JetBrains Mono',monospace;\">F C 9 8 / J 3 2 7 / K 4 5 6 / L M P T</span> maze gikongera kwiyubaka aho — <b>ukwikanda umunani kose bikora RAI yuzuye.</b>",
+      levelLabel: "URWEGO",
+      backBtn: "&larr; Subira inyuma",
+      resetBtn: "Tangira bushya",
+      copyBtn: "Koporora",
+      copiedBtn: "Byakoporowe",
+      decodeHeading: "Menya aho umubare ugana",
+      eightChars: "inyuguti 8",
+      raiLabel: "RAI",
+      locateBtn: "Shaka aho biri",
+      regionNote: "Iyi sisitemu ikorera mu <b>Rwanda</b>, mu turere tw'ubunini n'uburebure — ubunini <b>&minus;2.973955° kugeza &minus;0.919208°</b>, uburebure <b>28.861188° kugeza 30.905016°</b> — bikubiyemo <b>Kigali</b> yose. Gushaka umubare bigaragaza intambwe umunani ku ikarita, uhereye ku nyuma.",
+      footer: "Sisitemu y'aderesi y'igihugu — urubuga rw'igerageza. Amakarita &copy; <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\" rel=\"noopener\">OpenStreetMap</a>.",
+      searchEmpty: "Banza wandike izina ry'ahantu.",
+      searchSearching: "Kurashaka…",
+      searchNoResult: "Nta hantu habonetse mu Rwanda hahuye n'iryo zina.",
+      searchOutOfBounds: "Ahantu harengeje aho u Rwanda rugarukira.",
+      searchFolding: "Habonetse — kugabanya ikarita kuri ",
+      searchLocated: "Habonetse ",
+      searchFailed: "Ishakiro ryanze — genzura interineti hanyuma wongere ugerageze.",
+      encodeEnterBoth: "Andika ubunini n'uburebure byombi.",
+      encodeOutOfBounds: "Aho hantu harengeje aho u Rwanda rugarukira.",
+      encodeFolding: "Kugabanya ikarita kuri ako gace…",
+      encodeDone: "Byarangiye — RAI igaragara hejuru, ahantu hagaragajwe ku ikarita.",
+      decodeEnterCode: "Banza wandike umubare w'inyuguti umunani.",
+      decodeUnfolding: "Kugaragaza ku ikarita…",
+      decodeLocated: "Habonetse — aho ni hagati y'agasanduku ka nyuma.",
+      decodeBadLength: "Umubare ugomba kuba ufite inyuguti umunani.",
+      decodeBadChar: "Inyuguti ntizwi — reba ku gishushanyo cy'inyuguti.",
+      registerHeading: "Andika iyi nzu",
+      regOwnerPlaceholder: "Amazina y'unyiri inzu",
+      regPhonePlaceholder: "Numero ya telefoni",
+      regVillagePlaceholder: "Umudugudu",
+      regCellPlaceholder: "Akagari",
+      regSectorPlaceholder: "Umurenge",
+      regDistrictPlaceholder: "Akarere",
+      registerBtn: "Bika aderesi",
+      registerSaving: "Kubika…",
+      registerDone: "Byabitswe — iyi nzu yanditswe kuri iyi RAI.",
+      registerDuplicate: "Hari inzu isanzwe yanditswe kuri aho hantu nyine.",
+      registerFailed: "Ntibyabitswe — reba niba seriveri ikora.",
+      viewHouseholdsBtn: "Reba amazu yanditswe",
+      hideHouseholdsBtn: "Hisha amazu yanditswe",
+      noHouseholdsYet: "Nta nzu yanditswe kugeza ubu."
+    },
+    fr: {
+      eyebrow: "Kigali.RAI.Géocode en grille",
+      title: "Cliquez dans la grille, un pli à la fois.",
+      lede: "<strong>RAI</strong> — l'identifiant d'adresse du Rwanda — dessine une grille 4×4 directement sur la carte. Cliquez sur une cellule et la carte s'agrandit pour la remplir avec la même grille — huit plis réduisent n'importe quel point à un code de 8 caractères. Ou saisissez un code dans le panneau pour le voir se déplier à l'envers.",
+      mapHeading: "ADRESSES DU RWANDA",
+      mapHintClick: "cliquez sur une cellule",
+      mapHintDone: "code complet",
+      searchLabel: "Rechercher un lieu",
+      searchPlaceholder: "ex. Nyamirambo, Kigali",
+      searchBtn: "Rechercher",
+      latLabel: "Latitude",
+      lonLabel: "Longitude",
+      getRaiBtn: "Obtenir le RAI",
+      howItWorks: "Chaque clic réduit la carte à une cellule de la grille <span style=\"font-family:'JetBrains Mono',monospace;\">F C 9 8 / J 3 2 7 / K 4 5 6 / L M P T</span> et la redessine à cet endroit — <b>huit clics forment un RAI complet.</b>",
+      levelLabel: "NIVEAU",
+      backBtn: "&larr; Retour",
+      resetBtn: "Réinitialiser",
+      copyBtn: "Copier",
+      copiedBtn: "Copié",
+      decodeHeading: "Déplier un code",
+      eightChars: "8 caractères",
+      raiLabel: "RAI",
+      locateBtn: "Localiser",
+      regionNote: "Cette instance couvre le <b>Rwanda</b>, avec la région délimitée — latitude <b>&minus;2.973955° à &minus;0.919208°</b>, longitude <b>28.861188° à 30.905016°</b> — qui inclut confortablement tout <b>Kigali</b>. La localisation d'un code rejoue les huit plis sur la carte, en sens inverse.",
+      footer: "Système national d'adressage — plateforme de test. Fonds de carte &copy; <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\" rel=\"noopener\">OpenStreetMap</a>.",
+      searchEmpty: "Saisissez d'abord un nom de lieu.",
+      searchSearching: "Recherche en cours…",
+      searchNoResult: "Aucun lieu trouvé au Rwanda correspondant à ce nom.",
+      searchOutOfBounds: "Ce lieu se trouve hors de la région du Rwanda.",
+      searchFolding: "Trouvé — pliage de la grille sur ",
+      searchLocated: "Localisé : ",
+      searchFailed: "Échec de la recherche — vérifiez votre connexion internet et réessayez.",
+      encodeEnterBoth: "Saisissez une latitude et une longitude.",
+      encodeOutOfBounds: "Ce point se trouve hors de la région du Rwanda.",
+      encodeFolding: "Pliage de la grille sur ce point…",
+      encodeDone: "Terminé — RAI affiché ci-dessus, point marqué sur la carte.",
+      decodeEnterCode: "Saisissez d'abord un code de 8 caractères.",
+      decodeUnfolding: "Dépliage sur la carte…",
+      decodeLocated: "Localisé — c'est le centre de la cellule finale.",
+      decodeBadLength: "Le code doit comporter exactement 8 caractères.",
+      decodeBadChar: "Caractère non reconnu — vérifiez avec les lettres de la grille.",
+      registerHeading: "Enregistrer ce ménage",
+      regOwnerPlaceholder: "Nom du propriétaire",
+      regPhonePlaceholder: "Numéro de téléphone",
+      regVillagePlaceholder: "Village",
+      regCellPlaceholder: "Cellule",
+      regSectorPlaceholder: "Secteur",
+      regDistrictPlaceholder: "District",
+      registerBtn: "Enregistrer l'adresse",
+      registerSaving: "Enregistrement…",
+      registerDone: "Enregistré — ce ménage est maintenant associé à ce code RAI.",
+      registerDuplicate: "Un ménage est déjà enregistré à cet emplacement exact.",
+      registerFailed: "Échec de l'enregistrement — vérifiez que le serveur backend fonctionne.",
+      viewHouseholdsBtn: "Voir les adresses enregistrées",
+      hideHouseholdsBtn: "Masquer les adresses enregistrées",
+      noHouseholdsYet: "Aucune adresse enregistrée pour l'instant."
+    }
+  };
+
+  let currentLang = "en";
+
+  function t(key) {
+    return (I18N[currentLang] && I18N[currentLang][key]) || I18N.en[key] || key;
+  }
+
+  function applyTranslations() {
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      const key = el.getAttribute("data-i18n");
+      el.innerHTML = t(key);
+    });
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(function (el) {
+      const key = el.getAttribute("data-i18n-placeholder");
+      el.setAttribute("placeholder", t(key));
+    });
+    document.querySelectorAll(".lang-switch button").forEach(function (btn) {
+      btn.classList.toggle("active", btn.getAttribute("data-lang") === currentLang);
+    });
+    document.documentElement.setAttribute("lang", currentLang);
+    mapHint.textContent = level >= 8 ? t("mapHintDone") : t("mapHintClick");
+  }
+
+  document.querySelectorAll(".lang-switch button").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      currentLang = btn.getAttribute("data-lang");
+      applyTranslations();
+    });
+  });
+
+  /* ---------- RAI core ---------- */
 
   const RAI_GRID = [
     ['F', 'C', '9', '8'],
@@ -424,7 +732,6 @@
     ['L', 'M', 'P', 'T']
   ];
 
-  // reverse lookup: character -> {row, col}. Every character on the grid is unique.
   const CHAR_LOOKUP = {};
   RAI_GRID.forEach((r, ri) => r.forEach((ch, ci) => { CHAR_LOOKUP[ch] = { row: ri, col: ci }; }));
 
@@ -435,8 +742,6 @@
     maxLon: 30.905016
   };
 
-  // Given a parent bounding box and a chosen (row, col), return the child cell's box.
-  // Mirrors the original getRAI / getLatLngFromRAI narrowing formulas exactly.
   function cellBoundsFor(b, row, col) {
     const latDiv = (b.maxLat - b.minLat) / 4;
     const lonDiv = (b.maxLon - b.minLon) / 4;
@@ -482,19 +787,19 @@
     maxZoom: 20,
     maxNativeZoom: 19,
     attribution: '&copy; OpenStreetMap contributors'
-  });
+  }).addTo(map);
 
   const imageryLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
     maxZoom: 19,
     attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community'
-  }).addTo(map);
+  });
 
   const placeLabels = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
     maxZoom: 19,
     attribution: 'Labels &copy; Esri'
-  }).addTo(map);
+  });
 
-  L.control.layers(
+  const layersControl = L.control.layers(
     { 'Satellite imagery': imageryLayer, 'Streets': streetsLayer },
     { 'Place labels': placeLabels },
     { position: 'topright', collapsed: true }
@@ -503,7 +808,7 @@
   const gridLayer = L.layerGroup().addTo(map);
   let marker = null;
 
-  function placeMarker(lat, lon) {
+  function placeMarker(lat, lon, label) {
     if (marker) map.removeLayer(marker);
     marker = L.circleMarker([lat, lon], {
       radius: 8,
@@ -512,17 +817,73 @@
       fillColor: '#D99A2B',
       fillOpacity: 1
     }).addTo(map);
+    if (label) {
+      marker.bindPopup(label).openPopup();
+    }
   }
   function clearMarker() {
     if (marker) { map.removeLayer(marker); marker = null; }
   }
+
+  /* ---------- Major towns shown by default across Rwanda ---------- */
+  /* Coordinates are approximate town-center references, not survey-grade. */
+  const MAJOR_PLACES = [
+    { name: "Kigali", lat: -1.9441, lon: 30.0619 },
+    { name: "Huye (Butare)", lat: -2.5967, lon: 29.7392 },
+    { name: "Musanze (Ruhengeri)", lat: -1.4996, lon: 29.6339 },
+    { name: "Rubavu (Gisenyi)", lat: -1.6994, lon: 29.2564 },
+    { name: "Rusizi (Cyangugu)", lat: -2.4846, lon: 28.9074 },
+    { name: "Nyagatare", lat: -1.2941, lon: 30.3253 },
+    { name: "Muhanga (Gitarama)", lat: -2.0742, lon: 29.7566 },
+    { name: "Karongi (Kibuye)", lat: -2.0600, lon: 29.3458 },
+    { name: "Nyanza", lat: -2.3508, lon: 29.7500 },
+    { name: "Gicumbi (Byumba)", lat: -1.5764, lon: 30.0642 },
+    { name: "Rwamagana", lat: -1.9487, lon: 30.4347 },
+    { name: "Kayonza", lat: -1.8825, lon: 30.5153 },
+    { name: "Ngoma (Kibungo)", lat: -2.1667, lon: 30.5333 },
+    { name: "Kirehe", lat: -2.2833, lon: 30.7167 },
+    { name: "Bugesera (Nyamata)", lat: -2.1500, lon: 30.0833 },
+    { name: "Gatsibo", lat: -1.5900, lon: 30.4500 },
+    { name: "Kamonyi", lat: -2.0167, lon: 29.8333 },
+    { name: "Ruhango", lat: -2.2000, lon: 29.7833 },
+    { name: "Nyamagabe (Gikongoro)", lat: -2.4833, lon: 29.5833 },
+    { name: "Nyaruguru (Kibeho)", lat: -2.6500, lon: 29.5667 },
+    { name: "Gisagara", lat: -2.5833, lon: 29.7667 },
+    { name: "Ngororero", lat: -1.8667, lon: 29.5667 },
+    { name: "Nyabihu (Mukamira)", lat: -1.6667, lon: 29.4667 },
+    { name: "Rutsiro", lat: -1.9000, lon: 29.3333 },
+    { name: "Nyamasheke", lat: -2.3500, lon: 29.1167 },
+    { name: "Rulindo (Base)", lat: -1.7833, lon: 30.0833 },
+    { name: "Gakenke", lat: -1.6833, lon: 29.7833 },
+    { name: "Burera (Butaro)", lat: -1.4000, lon: 29.8500 }
+  ];
+
+  const townsLayer = L.layerGroup().addTo(map);
+  MAJOR_PLACES.forEach(function (place) {
+    const dot = L.circleMarker([place.lat, place.lon], {
+      radius: 4,
+      color: '#12203B',
+      weight: 1,
+      fillColor: '#1F7A6C',
+      fillOpacity: 0.85
+    });
+    dot.bindTooltip(place.name, {
+      permanent: true,
+      direction: 'right',
+      offset: [4, 0],
+      className: 'town-label'
+    });
+    dot.bindPopup(place.name);
+    townsLayer.addLayer(dot);
+  });
+  layersControl.addOverlay(townsLayer, 'Towns & cities');
 
   /* ---------- Drill-down state ---------- */
 
   let currentBounds = { ...BOUNDS };
   let level = 0;
   let code = '';
-  let history = []; // {bounds, code, level}
+  let history = [];
   let isAnimating = false;
 
   const levelOut = document.getElementById('levelOut');
@@ -532,8 +893,10 @@
   const resetBtn = document.getElementById('resetBtn');
   const copyBtn = document.getElementById('copyBtn');
   const mapHint = document.getElementById('mapHint');
+  const registerPanel = document.getElementById('registerPanel');
+  const registerStatus = document.getElementById('registerStatus');
+  let lastCompletedLatLon = null;
 
-  // build the 8 progress dots once
   for (let i = 0; i < 8; i++) {
     const d = document.createElement('span');
     progressDots.appendChild(d);
@@ -553,7 +916,14 @@
     }
     backBtn.disabled = history.length === 0 || isAnimating;
     resetBtn.disabled = level === 0 || isAnimating;
-    mapHint.textContent = level >= 8 ? 'code complete' : 'click a lettered cell';
+    mapHint.textContent = level >= 8 ? t("mapHintDone") : t("mapHintClick");
+
+    if (level >= 8 && !isAnimating) {
+      registerPanel.style.display = 'block';
+    } else {
+      registerPanel.style.display = 'none';
+      registerStatus.textContent = '';
+    }
   }
 
   function drawGrid(bounds) {
@@ -607,7 +977,8 @@
       gridLayer.clearLayers();
       const centerLat = (currentBounds.minLat + currentBounds.maxLat) / 2;
       const centerLon = (currentBounds.minLon + currentBounds.maxLon) / 2;
-      placeMarker(centerLat, centerLon);
+      lastCompletedLatLon = { lat: centerLat, lon: centerLon };
+      placeMarker(centerLat, centerLon, code.replace(/-/g, ''));
       map.flyTo([centerLat, centerLon], 19, { duration: 0.6 });
     }
   }
@@ -628,6 +999,7 @@
     history = [];
     level = 0;
     code = '';
+    lastCompletedLatLon = null;
     currentBounds = { ...BOUNDS };
     clearMarker();
     updateReadouts();
@@ -642,8 +1014,8 @@
     if (!clean) return;
     navigator.clipboard.writeText(clean).then(() => {
       const original = copyBtn.textContent;
-      copyBtn.textContent = 'Copied';
-      setTimeout(() => { copyBtn.textContent = original; }, 1200);
+      copyBtn.textContent = t("copiedBtn");
+      setTimeout(() => { copyBtn.textContent = t("copyBtn"); }, 1200);
     });
   });
 
@@ -672,7 +1044,7 @@
     for (let i = 0; i < 8; i++) {
       const char = pin[i];
       const loc = CHAR_LOOKUP[char];
-      drawGrid(bounds); // show the parent grid briefly before "clicking" the cell
+      drawGrid(bounds);
       await sleep(420);
       isAnimating = false;
       selectCell(loc.row, loc.col, bounds);
@@ -687,22 +1059,22 @@
   function runDecode() {
     const value = pinInput.value.trim();
     if (!value) {
-      decodeStatus.textContent = 'Enter an 8-character code first.';
+      decodeStatus.textContent = t("decodeEnterCode");
       decodeStatus.className = 'status-msg error';
       return;
     }
     try {
-      getLatLngFromRAI(value); // validates the code; throws if malformed
+      getLatLngFromRAI(value);
       const pin = value.replace(/-/g, '');
-      decodeStatus.textContent = 'Unfolding on the map\u2026';
+      decodeStatus.textContent = t("decodeUnfolding");
       decodeStatus.className = 'status-msg ok';
       playDecodeAnimation(pin).then(() => {
-        decodeStatus.textContent = 'Located \u2014 that\u2019s the center of the final cell.';
+        decodeStatus.textContent = t("decodeLocated");
       });
     } catch (err) {
       decodeStatus.textContent = err.message === 'Invalid RAI'
-        ? 'That code needs exactly 8 characters.'
-        : 'Unrecognized character \u2014 check against the grid letters.';
+        ? t("decodeBadLength")
+        : t("decodeBadChar");
       decodeStatus.className = 'status-msg error';
     }
   }
@@ -719,7 +1091,7 @@
   const encodeBtn = document.getElementById('encodeBtn');
   const encodeStatus = document.getElementById('encodeStatus');
 
-  async function playEncodeAnimation(lat, lon) {
+  async function playEncodeAnimation(lat, lon, label) {
     resetAll();
     isAnimating = true;
     updateReadouts();
@@ -743,7 +1115,7 @@
     }
     isAnimating = false;
     updateReadouts();
-    placeMarker(lat, lon); // mark the exact point entered, alongside the final cell's center
+    placeMarker(lat, lon, label);
   }
 
   function runEncode() {
@@ -751,20 +1123,20 @@
     const lonVal = parseFloat(lonInput.value);
 
     if (Number.isNaN(latVal) || Number.isNaN(lonVal)) {
-      encodeStatus.textContent = 'Enter both a latitude and a longitude.';
+      encodeStatus.textContent = t("encodeEnterBoth");
       encodeStatus.className = 'status-msg error';
       return;
     }
     if (latVal < BOUNDS.minLat || latVal > BOUNDS.maxLat || lonVal < BOUNDS.minLon || lonVal > BOUNDS.maxLon) {
-      encodeStatus.textContent = 'That point falls outside the Rwanda bounding region.';
+      encodeStatus.textContent = t("encodeOutOfBounds");
       encodeStatus.className = 'status-msg error';
       return;
     }
 
-    encodeStatus.textContent = 'Folding the grid onto that point\u2026';
+    encodeStatus.textContent = t("encodeFolding");
     encodeStatus.className = 'status-msg ok';
-    playEncodeAnimation(latVal, lonVal).then(() => {
-      encodeStatus.textContent = 'Done \u2014 RAI shown above, point marked on the map.';
+    playEncodeAnimation(latVal, lonVal, latVal.toFixed(5) + ', ' + lonVal.toFixed(5)).then(() => {
+      encodeStatus.textContent = t("encodeDone");
     });
   }
 
@@ -775,7 +1147,257 @@
     });
   });
 
+  /* ---------- Search: named place (Nominatim) or category (Overpass) ---------- */
+
+  const placeSearch = document.getElementById('placeSearch');
+  const searchBtn = document.getElementById('searchBtn');
+  const searchStatus = document.getElementById('searchStatus');
+
+  const CATEGORY_TAGS = {
+    hotel: [["tourism", "hotel"]],
+    hotels: [["tourism", "hotel"]],
+    guesthouse: [["tourism", "guest_house"]],
+    "guest house": [["tourism", "guest_house"]],
+    restaurant: [["amenity", "restaurant"]],
+    restaurants: [["amenity", "restaurant"]],
+    hospital: [["amenity", "hospital"]],
+    hospitals: [["amenity", "hospital"]],
+    clinic: [["amenity", "clinic"]],
+    bank: [["amenity", "bank"]],
+    banks: [["amenity", "bank"]],
+    school: [["amenity", "school"]],
+    schools: [["amenity", "school"]],
+    pharmacy: [["amenity", "pharmacy"]],
+    pharmacies: [["amenity", "pharmacy"]],
+    market: [["amenity", "marketplace"]],
+    markets: [["amenity", "marketplace"]],
+    church: [["amenity", "place_of_worship"]],
+    churches: [["amenity", "place_of_worship"]],
+    mosque: [["amenity", "place_of_worship"]],
+    fuel: [["amenity", "fuel"]],
+    "gas station": [["amenity", "fuel"]],
+    "petrol station": [["amenity", "fuel"]],
+    atm: [["amenity", "atm"]],
+    supermarket: [["shop", "supermarket"]],
+    supermarkets: [["shop", "supermarket"]]
+  };
+
+  const categoryResultsLayer = L.layerGroup().addTo(map);
+
+  async function searchCategory(tagPairs) {
+    const bboxStr = BOUNDS.minLat + "," + BOUNDS.minLon + "," + BOUNDS.maxLat + "," + BOUNDS.maxLon;
+    const clauses = tagPairs.map(function ([k, v]) {
+      return 'node["' + k + '"="' + v + '"](' + bboxStr + ');way["' + k + '"="' + v + '"](' + bboxStr + ');';
+    }).join("");
+    const query = "[out:json][timeout:25];(" + clauses + ");out center 40;";
+
+    const res = await fetch("https://overpass-api.de/api/interpreter", {
+      method: "POST",
+      body: query
+    });
+    const data = await res.json();
+    return (data.elements || [])
+      .map(function (el) {
+        const lat = el.lat != null ? el.lat : (el.center ? el.center.lat : null);
+        const lon = el.lon != null ? el.lon : (el.center ? el.center.lon : null);
+        const name = el.tags && el.tags.name ? el.tags.name : null;
+        return lat != null && lon != null ? { lat, lon, name } : null;
+      })
+      .filter(Boolean);
+  }
+
+  function renderCategoryResults(results) {
+    categoryResultsLayer.clearLayers();
+    if (!results.length) return;
+
+    const bounds = [];
+    results.forEach(function (r) {
+      const dot = L.circleMarker([r.lat, r.lon], {
+        radius: 7,
+        color: '#12203B',
+        weight: 2,
+        fillColor: '#D99A2B',
+        fillOpacity: 0.95
+      });
+      if (r.name) dot.bindPopup(r.name);
+      categoryResultsLayer.addLayer(dot);
+      bounds.push([r.lat, r.lon]);
+    });
+    map.fitBounds(bounds, { padding: [30, 30], maxZoom: 15 });
+  }
+
+  async function runPlaceSearch() {
+    const query = placeSearch.value.trim();
+    if (!query) {
+      searchStatus.textContent = t("searchEmpty");
+      searchStatus.className = 'status-msg error';
+      return;
+    }
+
+    categoryResultsLayer.clearLayers();
+    const categoryKey = query.toLowerCase();
+
+    if (CATEGORY_TAGS[categoryKey]) {
+      searchStatus.textContent = t("searchSearching");
+      searchStatus.className = 'status-msg';
+      try {
+        const results = await searchCategory(CATEGORY_TAGS[categoryKey]);
+        if (!results.length) {
+          searchStatus.textContent = t("searchNoResult");
+          searchStatus.className = 'status-msg error';
+          return;
+        }
+        renderCategoryResults(results);
+        searchStatus.textContent = results.length + " " + categoryKey + " found — shown as pins on the map.";
+        searchStatus.className = 'status-msg ok';
+      } catch (err) {
+        searchStatus.textContent = t("searchFailed");
+        searchStatus.className = 'status-msg error';
+      }
+      return;
+    }
+
+    searchStatus.textContent = t("searchSearching");
+    searchStatus.className = 'status-msg';
+
+    try {
+      const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=rw&q=' + encodeURIComponent(query);
+      const res = await fetch(url, {
+        headers: { 'Accept-Language': currentLang }
+      });
+      const results = await res.json();
+
+      if (!results.length) {
+        searchStatus.textContent = t("searchNoResult");
+        searchStatus.className = 'status-msg error';
+        return;
+      }
+
+      const lat = parseFloat(results[0].lat);
+      const lon = parseFloat(results[0].lon);
+
+      if (lat < BOUNDS.minLat || lat > BOUNDS.maxLat || lon < BOUNDS.minLon || lon > BOUNDS.maxLon) {
+        searchStatus.textContent = t("searchOutOfBounds");
+        searchStatus.className = 'status-msg error';
+        return;
+      }
+
+      const shortName = results[0].display_name.split(',')[0];
+      searchStatus.textContent = t("searchFolding") + shortName + '…';
+      searchStatus.className = 'status-msg ok';
+
+      await playEncodeAnimation(lat, lon, shortName);
+      searchStatus.textContent = t("searchLocated") + shortName + '.';
+    } catch (err) {
+      searchStatus.textContent = t("searchFailed");
+      searchStatus.className = 'status-msg error';
+    }
+  }
+
+  searchBtn.addEventListener('click', runPlaceSearch);
+  placeSearch.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') runPlaceSearch();
+  });
+
+  /* ---------- Register household (saves in the browser, no backend needed) ---------- */
+
+  const STORAGE_KEY = "rai_households";
+
+  function loadHouseholds() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveHouseholds(list) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+  }
+
+  const registerBtn = document.getElementById('registerBtn');
+  const regOwnerName = document.getElementById('regOwnerName');
+  const regPhone = document.getElementById('regPhone');
+  const regVillage = document.getElementById('regVillage');
+  const regCell = document.getElementById('regCell');
+  const regSector = document.getElementById('regSector');
+  const regDistrict = document.getElementById('regDistrict');
+
+  function submitRegistration() {
+    if (!lastCompletedLatLon || !code) return;
+
+    const cleanCode = code.replace(/-/g, '');
+    const households = loadHouseholds();
+
+    const duplicate = households.find(h => h.rai_code === cleanCode);
+    if (duplicate) {
+      registerStatus.textContent = t("registerDuplicate");
+      registerStatus.className = 'status-msg error';
+      return;
+    }
+
+    const record = {
+      id: households.length ? households[households.length - 1].id + 1 : 1,
+      rai_code: cleanCode,
+      owner_name: regOwnerName.value.trim(),
+      phone: regPhone.value.trim(),
+      village: regVillage.value.trim(),
+      cell: regCell.value.trim(),
+      sector: regSector.value.trim(),
+      district: regDistrict.value.trim(),
+      latitude: lastCompletedLatLon.lat,
+      longitude: lastCompletedLatLon.lon,
+      created_at: new Date().toISOString()
+    };
+
+    households.push(record);
+    saveHouseholds(households);
+
+    registerStatus.textContent = t("registerDone");
+    registerStatus.className = 'status-msg ok';
+
+    regOwnerName.value = '';
+    regPhone.value = '';
+    regVillage.value = '';
+    regCell.value = '';
+    regSector.value = '';
+    regDistrict.value = '';
+  }
+
+  registerBtn.addEventListener('click', submitRegistration);
+
+  const viewHouseholdsBtn = document.getElementById('viewHouseholdsBtn');
+  const householdsList = document.getElementById('householdsList');
+  let householdsVisible = false;
+
+  function renderHouseholds() {
+    const households = loadHouseholds();
+    if (!households.length) {
+      householdsList.innerHTML = '<p class="region-note">' + t("noHouseholdsYet") + '</p>';
+      return;
+    }
+    const rows = households.slice().reverse().map(function (h) {
+      const loc = [h.village, h.cell, h.sector, h.district].filter(Boolean).join(', ');
+      return '<div style="padding:10px 0; border-bottom:1px dashed var(--line);">' +
+        '<span class="code-value" style="font-size:15px;">' + h.rai_code + '</span><br>' +
+        '<span class="region-note">' + (h.owner_name || '—') +
+        (h.phone ? ' · ' + h.phone : '') +
+        (loc ? '<br>' + loc : '') + '</span>' +
+        '</div>';
+    }).join('');
+    householdsList.innerHTML = rows;
+  }
+
+  viewHouseholdsBtn.addEventListener('click', function () {
+    householdsVisible = !householdsVisible;
+    householdsList.style.display = householdsVisible ? 'block' : 'none';
+    viewHouseholdsBtn.textContent = householdsVisible ? t("hideHouseholdsBtn") : t("viewHouseholdsBtn");
+    if (householdsVisible) renderHouseholds();
+  });
+
   /* ---------- Initial render ---------- */
+  applyTranslations();
   updateReadouts();
   drawGrid(currentBounds);
 
