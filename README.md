@@ -1,4 +1,4 @@
-Rwanda Addressing System
+<B>Rwanda Addressing System</B> <br>
 This is a testing platform for the National addressing System for Rwanda it consists in defining the bounding box based on Rwanda centroid point and a 4x4 recursive squares and the principles and logic behind.  
 The proposed Rwanda National Addressing System introduces a structured, standardized, and geospatially enabled approach to identifying and locating every addressable object within the country
 
