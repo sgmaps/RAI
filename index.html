@@ -50,6 +50,7 @@
     padding-bottom:28px;
     border-bottom:1px solid var(--line);
   }
+<<<<<<< HEAD
   .top-row{
     display:flex;
     align-items:center;
@@ -57,6 +58,8 @@
     gap:12px;
     flex-wrap:wrap;
   }
+=======
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
   .eyebrow{
     font-family:'JetBrains Mono', monospace;
     font-size:12.5px;
@@ -76,6 +79,7 @@
     transform:rotate(45deg);
     flex-shrink:0;
   }
+<<<<<<< HEAD
   .lang-switch{
     display:flex;
     gap:4px;
@@ -99,13 +103,19 @@
   .lang-switch button.active{ background:var(--ink); color:var(--white); }
   .lang-switch button:hover:not(.active){ background:var(--teal-dim); }
 
+=======
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
   h1{
     font-family:'Fraunces', serif;
     font-weight:600;
     font-size:clamp(30px,4.6vw,48px);
     line-height:1.08;
     margin:0;
+<<<<<<< HEAD
     max-width:22ch;
+=======
+    max-width:20ch;
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
   }
   .lede{
     font-size:16px;
@@ -176,6 +186,7 @@
   }
   .grid-label::before{ display:none; }
 
+<<<<<<< HEAD
   .town-label{
     background:rgba(251,249,244,0.9) !important;
     border:1px solid var(--line) !important;
@@ -189,6 +200,8 @@
   }
   .town-label::before{ display:none; }
 
+=======
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
   .readout{
     padding:16px 20px;
     border-top:1px solid var(--line);
@@ -360,6 +373,7 @@
   .coord-field input:focus-visible{ outline:2px solid var(--teal); outline-offset:1px; }
   .coord-entry .status-msg{ margin-top:8px; }
 
+<<<<<<< HEAD
   .search-entry{
     padding:16px 20px;
     border-top:1px solid var(--line);
@@ -382,6 +396,8 @@
   #placeSearch:focus-visible{ outline:2px solid var(--teal); outline-offset:1px; }
   .search-entry .status-msg{ margin-top:8px; }
 
+=======
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
   footer{
     margin-top:48px;
     padding-top:20px;
@@ -397,6 +413,7 @@
 <div class="wrap">
 
   <header class="hero">
+<<<<<<< HEAD
     <div class="top-row">
       <div class="eyebrow" data-i18n="eyebrow">Kigali.RAI.Grid-based Geocode</div>
       <div class="lang-switch" role="group" aria-label="Language">
@@ -407,12 +424,18 @@
     </div>
     <h1 data-i18n="title">Click into the grid, one fold at a time.</h1>
     <p class="lede" data-i18n="lede"><strong>RAI</strong> — the Rwanda Address Identifier — draws a 4×4 grid right on the map. Click a cell and the map zooms in to fill it with the same grid again — eight folds narrow any point down to an 8-character code. Or type a code into the panel to watch it unfold in reverse.</p>
+=======
+    <div class="eyebrow"> kigali.RAI.Grid-based Geocode</div>
+    <h1>Click into the grid, one fold at a time.</h1>
+    <p class="lede">The 4×4 <strong>RAI</strong>Rwanda Adress Identifier grid is drawn right on the map. Click a cell and the map zooms in to fill it with the same grid again — Eight folds narrow any point down to an 8-character code. Or type a code into the panel to watch it unfold in reverse.</p>
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
   </header>
 
   <div class="grid-layout">
 
     <section class="card" aria-labelledby="mapHeading">
       <div class="card-head">
+<<<<<<< HEAD
         <h2 id="mapHeading" data-i18n="mapHeading">RWANDA ADDRESSES</h2>
         <span class="hint" id="mapHint" data-i18n="mapHintClick">click a lettered cell</span>
       </div>
@@ -442,10 +465,32 @@
         <p class="status-msg" id="encodeStatus" role="status" aria-live="polite"></p>
       </div>
       <div class="how-it-works" data-i18n="howItWorks">
+=======
+        <h2 id="mapHeading">RWANDA ADRESSES</h2>
+        <span class="hint" id="mapHint">click a lettered cell</span>
+      </div>
+      <div id="map"></div>
+      <div class="coord-entry">
+        <div class="coord-entry-fields">
+          <div class="coord-field">
+            <label class="field-label" for="latInput">Latitude</label>
+            <input id="latInput" type="text" placeholder="-1.9441" autocomplete="off" spellcheck="false">
+          </div>
+          <div class="coord-field">
+            <label class="field-label" for="lonInput">Longitude</label>
+            <input id="lonInput" type="text" placeholder="30.0619" autocomplete="off" spellcheck="false">
+          </div>
+          <button class="locate-btn" id="encodeBtn" type="button">Get RAI</button>
+        </div>
+        <p class="status-msg" id="encodeStatus" role="status" aria-live="polite"></p>
+      </div>
+      <div class="how-it-works">
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
         Each click narrows the map to one cell of the grid <span style="font-family:'JetBrains Mono',monospace;">F C 9 8 / J 3 2 7 / K 4 5 6 / L M P T</span> and redraws it there — <b>eight clicks make a full RAI.</b>
       </div>
       <div class="readout">
         <div class="progress-block">
+<<<<<<< HEAD
           <span data-i18n="levelLabel">LEVEL</span> <span id="levelOut">0</span>/8
           <span class="progress-dots" id="progressDots"></span>
         </div>
@@ -479,10 +524,25 @@
         <button class="btn" id="viewHouseholdsBtn" type="button" data-i18n="viewHouseholdsBtn">View saved addresses</button>
         <div id="householdsList" style="margin-top:12px; display:none;"></div>
       </div>
+=======
+          LEVEL <span id="levelOut">0</span>/8
+          <span class="progress-dots" id="progressDots"></span>
+        </div>
+        <div class="btn-row">
+          <button class="btn" id="backBtn" type="button" disabled>&larr; Back</button>
+          <button class="btn" id="resetBtn" type="button" disabled>Reset</button>
+        </div>
+        <div class="code-block">
+          <span class="code-value empty" id="encodeOut">— — — — — — — —</span>
+          <button class="btn" id="copyBtn" type="button">Copy</button>
+        </div>
+      </div>
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
     </section>
 
     <section class="card" aria-labelledby="decodeHeading">
       <div class="card-head">
+<<<<<<< HEAD
         <h2 id="decodeHeading" data-i18n="decodeHeading">Unfold a code</h2>
         <span class="hint" data-i18n="eightChars">8 chars</span>
       </div>
@@ -492,11 +552,26 @@
           <div class="pin-input-row" style="margin-top:8px;">
             <input id="pinInput" type="text" placeholder="F3-C9-2J7K" maxlength="10" autocomplete="off" spellcheck="false">
             <button class="locate-btn" id="locateBtn" type="button" data-i18n="locateBtn">Locate</button>
+=======
+        <h2 id="decodeHeading">Unfold a code</h2>
+        <span class="hint">8 chars</span>
+      </div>
+      <div class="decode-body">
+        <div>
+          <label class="field-label" for="pinInput">RAI</label>
+          <div class="pin-input-row" style="margin-top:8px;">
+            <input id="pinInput" type="text" placeholder="F3-C9-2J7K" maxlength="10" autocomplete="off" spellcheck="false">
+            <button class="locate-btn" id="locateBtn" type="button">Locate</button>
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
           </div>
         </div>
         <p class="status-msg" id="decodeStatus" role="status" aria-live="polite"></p>
         <hr class="divider-line">
+<<<<<<< HEAD
         <p class="region-note" data-i18n="regionNote">
+=======
+        <p class="region-note">
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
           This instance covers <b>Rwanda</b>, with the bounding region —
           latitude <b>&minus;2.973955° to &minus;0.919208°</b>, longitude <b>28.861188° to 30.905016°</b> —
           which comfortably includes all of <b>Kigali</b>. Locating a code plays
@@ -507,8 +582,13 @@
 
   </div>
 
+<<<<<<< HEAD
   <footer data-i18n="footer">
    National addressing system — testing platform. Map tiles &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors.
+=======
+  <footer>
+   national coverage. Map tiles &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors.
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
   </footer>
 
 </div>
@@ -518,6 +598,7 @@
 (function(){
   "use strict";
 
+<<<<<<< HEAD
   /* ---------- Translations ---------- */
 
   const I18N = {
@@ -724,6 +805,9 @@
   });
 
   /* ---------- RAI core ---------- */
+=======
+  /* ---------- RAIcore ---------- */
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
 
   const RAI_GRID = [
     ['F', 'C', '9', '8'],
@@ -732,6 +816,10 @@
     ['L', 'M', 'P', 'T']
   ];
 
+<<<<<<< HEAD
+=======
+  // reverse lookup: character -> {row, col}. Every character on the grid is unique.
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
   const CHAR_LOOKUP = {};
   RAI_GRID.forEach((r, ri) => r.forEach((ch, ci) => { CHAR_LOOKUP[ch] = { row: ri, col: ci }; }));
 
@@ -742,6 +830,11 @@
     maxLon: 30.905016
   };
 
+<<<<<<< HEAD
+=======
+  // Given a parent bounding box and a chosen (row, col), return the child cell's box.
+  // Mirrors the original getRAI / getLatLngFromRAI narrowing formulas exactly.
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
   function cellBoundsFor(b, row, col) {
     const latDiv = (b.maxLat - b.minLat) / 4;
     const lonDiv = (b.maxLon - b.minLon) / 4;
@@ -787,19 +880,33 @@
     maxZoom: 20,
     maxNativeZoom: 19,
     attribution: '&copy; OpenStreetMap contributors'
+<<<<<<< HEAD
   }).addTo(map);
+=======
+  });
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
 
   const imageryLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
     maxZoom: 19,
     attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community'
+<<<<<<< HEAD
   });
+=======
+  }).addTo(map);
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
 
   const placeLabels = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
     maxZoom: 19,
     attribution: 'Labels &copy; Esri'
+<<<<<<< HEAD
   });
 
   const layersControl = L.control.layers(
+=======
+  }).addTo(map);
+
+  L.control.layers(
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
     { 'Satellite imagery': imageryLayer, 'Streets': streetsLayer },
     { 'Place labels': placeLabels },
     { position: 'topright', collapsed: true }
@@ -808,7 +915,11 @@
   const gridLayer = L.layerGroup().addTo(map);
   let marker = null;
 
+<<<<<<< HEAD
   function placeMarker(lat, lon, label) {
+=======
+  function placeMarker(lat, lon) {
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
     if (marker) map.removeLayer(marker);
     marker = L.circleMarker([lat, lon], {
       radius: 8,
@@ -817,14 +928,18 @@
       fillColor: '#D99A2B',
       fillOpacity: 1
     }).addTo(map);
+<<<<<<< HEAD
     if (label) {
       marker.bindPopup(label).openPopup();
     }
+=======
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
   }
   function clearMarker() {
     if (marker) { map.removeLayer(marker); marker = null; }
   }
 
+<<<<<<< HEAD
   /* ---------- Major towns shown by default across Rwanda ---------- */
   /* Coordinates are approximate town-center references, not survey-grade. */
   const MAJOR_PLACES = [
@@ -878,12 +993,18 @@
   });
   layersControl.addOverlay(townsLayer, 'Towns & cities');
 
+=======
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
   /* ---------- Drill-down state ---------- */
 
   let currentBounds = { ...BOUNDS };
   let level = 0;
   let code = '';
+<<<<<<< HEAD
   let history = [];
+=======
+  let history = []; // {bounds, code, level}
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
   let isAnimating = false;
 
   const levelOut = document.getElementById('levelOut');
@@ -893,10 +1014,15 @@
   const resetBtn = document.getElementById('resetBtn');
   const copyBtn = document.getElementById('copyBtn');
   const mapHint = document.getElementById('mapHint');
+<<<<<<< HEAD
   const registerPanel = document.getElementById('registerPanel');
   const registerStatus = document.getElementById('registerStatus');
   let lastCompletedLatLon = null;
 
+=======
+
+  // build the 8 progress dots once
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
   for (let i = 0; i < 8; i++) {
     const d = document.createElement('span');
     progressDots.appendChild(d);
@@ -916,6 +1042,7 @@
     }
     backBtn.disabled = history.length === 0 || isAnimating;
     resetBtn.disabled = level === 0 || isAnimating;
+<<<<<<< HEAD
     mapHint.textContent = level >= 8 ? t("mapHintDone") : t("mapHintClick");
 
     if (level >= 8 && !isAnimating) {
@@ -924,6 +1051,9 @@
       registerPanel.style.display = 'none';
       registerStatus.textContent = '';
     }
+=======
+    mapHint.textContent = level >= 8 ? 'code complete' : 'click a lettered cell';
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
   }
 
   function drawGrid(bounds) {
@@ -977,8 +1107,12 @@
       gridLayer.clearLayers();
       const centerLat = (currentBounds.minLat + currentBounds.maxLat) / 2;
       const centerLon = (currentBounds.minLon + currentBounds.maxLon) / 2;
+<<<<<<< HEAD
       lastCompletedLatLon = { lat: centerLat, lon: centerLon };
       placeMarker(centerLat, centerLon, code.replace(/-/g, ''));
+=======
+      placeMarker(centerLat, centerLon);
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
       map.flyTo([centerLat, centerLon], 19, { duration: 0.6 });
     }
   }
@@ -999,7 +1133,10 @@
     history = [];
     level = 0;
     code = '';
+<<<<<<< HEAD
     lastCompletedLatLon = null;
+=======
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
     currentBounds = { ...BOUNDS };
     clearMarker();
     updateReadouts();
@@ -1014,8 +1151,13 @@
     if (!clean) return;
     navigator.clipboard.writeText(clean).then(() => {
       const original = copyBtn.textContent;
+<<<<<<< HEAD
       copyBtn.textContent = t("copiedBtn");
       setTimeout(() => { copyBtn.textContent = t("copyBtn"); }, 1200);
+=======
+      copyBtn.textContent = 'Copied';
+      setTimeout(() => { copyBtn.textContent = original; }, 1200);
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
     });
   });
 
@@ -1044,7 +1186,11 @@
     for (let i = 0; i < 8; i++) {
       const char = pin[i];
       const loc = CHAR_LOOKUP[char];
+<<<<<<< HEAD
       drawGrid(bounds);
+=======
+      drawGrid(bounds); // show the parent grid briefly before "clicking" the cell
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
       await sleep(420);
       isAnimating = false;
       selectCell(loc.row, loc.col, bounds);
@@ -1059,11 +1205,16 @@
   function runDecode() {
     const value = pinInput.value.trim();
     if (!value) {
+<<<<<<< HEAD
       decodeStatus.textContent = t("decodeEnterCode");
+=======
+      decodeStatus.textContent = 'Enter an 8-character code first.';
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
       decodeStatus.className = 'status-msg error';
       return;
     }
     try {
+<<<<<<< HEAD
       getLatLngFromRAI(value);
       const pin = value.replace(/-/g, '');
       decodeStatus.textContent = t("decodeUnfolding");
@@ -1075,6 +1226,19 @@
       decodeStatus.textContent = err.message === 'Invalid RAI'
         ? t("decodeBadLength")
         : t("decodeBadChar");
+=======
+      getLatLngFromRAI(value); // validates the code; throws if malformed
+      const pin = value.replace(/-/g, '');
+      decodeStatus.textContent = 'Unfolding on the map\u2026';
+      decodeStatus.className = 'status-msg ok';
+      playDecodeAnimation(pin).then(() => {
+        decodeStatus.textContent = 'Located \u2014 that\u2019s the center of the final cell.';
+      });
+    } catch (err) {
+      decodeStatus.textContent = err.message === 'Invalid RAI'
+        ? 'That code needs exactly 8 characters.'
+        : 'Unrecognized character \u2014 check against the grid letters.';
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
       decodeStatus.className = 'status-msg error';
     }
   }
@@ -1091,7 +1255,11 @@
   const encodeBtn = document.getElementById('encodeBtn');
   const encodeStatus = document.getElementById('encodeStatus');
 
+<<<<<<< HEAD
   async function playEncodeAnimation(lat, lon, label) {
+=======
+  async function playEncodeAnimation(lat, lon) {
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
     resetAll();
     isAnimating = true;
     updateReadouts();
@@ -1115,7 +1283,11 @@
     }
     isAnimating = false;
     updateReadouts();
+<<<<<<< HEAD
     placeMarker(lat, lon, label);
+=======
+    placeMarker(lat, lon); // mark the exact point entered, alongside the final cell's center
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
   }
 
   function runEncode() {
@@ -1123,20 +1295,35 @@
     const lonVal = parseFloat(lonInput.value);
 
     if (Number.isNaN(latVal) || Number.isNaN(lonVal)) {
+<<<<<<< HEAD
       encodeStatus.textContent = t("encodeEnterBoth");
+=======
+      encodeStatus.textContent = 'Enter both a latitude and a longitude.';
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
       encodeStatus.className = 'status-msg error';
       return;
     }
     if (latVal < BOUNDS.minLat || latVal > BOUNDS.maxLat || lonVal < BOUNDS.minLon || lonVal > BOUNDS.maxLon) {
+<<<<<<< HEAD
       encodeStatus.textContent = t("encodeOutOfBounds");
+=======
+      encodeStatus.textContent = 'That point falls outside the Rwanda bounding region.';
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
       encodeStatus.className = 'status-msg error';
       return;
     }
 
+<<<<<<< HEAD
     encodeStatus.textContent = t("encodeFolding");
     encodeStatus.className = 'status-msg ok';
     playEncodeAnimation(latVal, lonVal, latVal.toFixed(5) + ', ' + lonVal.toFixed(5)).then(() => {
       encodeStatus.textContent = t("encodeDone");
+=======
+    encodeStatus.textContent = 'Folding the grid onto that point\u2026';
+    encodeStatus.className = 'status-msg ok';
+    playEncodeAnimation(latVal, lonVal).then(() => {
+      encodeStatus.textContent = 'Done \u2014 RAI shown above, point marked on the map.';
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
     });
   }
 
@@ -1147,6 +1334,7 @@
     });
   });
 
+<<<<<<< HEAD
   /* ---------- Search: named place (Nominatim) or category (Overpass) ---------- */
 
   const placeSearch = document.getElementById('placeSearch');
@@ -1398,6 +1586,9 @@
 
   /* ---------- Initial render ---------- */
   applyTranslations();
+=======
+  /* ---------- Initial render ---------- */
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
   updateReadouts();
   drawGrid(currentBounds);
 
@@ -1405,4 +1596,8 @@
 </script>
 
 </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> b4988933f87488ab55d01199321873df2d540ce4
