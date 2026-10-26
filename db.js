@@ -7,8 +7,6 @@ db.exec(`
   CREATE TABLE IF NOT EXISTS households (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     rai_code TEXT UNIQUE NOT NULL,
-    owner_name TEXT,
-    phone TEXT,
     province TEXT,
     district TEXT,
     sector TEXT,
